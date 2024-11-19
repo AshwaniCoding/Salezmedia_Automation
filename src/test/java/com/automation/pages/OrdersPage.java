@@ -80,8 +80,8 @@ public class OrdersPage extends BasePage{
         for (int i = 0;i<totalPages;i++){
             rowNum = ExcelUtils.writeDataIntoSheet(rowNum,getListOfWebElement());
             actions.scrollToElement(nextBtn).pause(1000).click(nextBtn).build().perform();
-            ExcelUtils.saveIntoFile("SalezMedia.xlsx");
         }
+        ExcelUtils.saveIntoFile("SalezMedia.xlsx");
 
     }
 }

@@ -71,28 +71,42 @@ public class ExcelUtils {
         }
     }
 
-    public static int writeDataIntoSheet(int rowNum, List<List<WebElement>> elements){
-
-        int totalRows = elements.getFirst().size();
+    public static int writeDataIntoSheet(int rowNum, List<List<WebElement>> elements) {
+        // Calculate the minimum number of rows across all columns
+        int totalRows = elements.stream()
+                .mapToInt(List::size)
+                .min()
+                .orElse(0);
 
         // Populate data rows
         for (int i = 0; i < totalRows; i++) {
-            Row row = sheet.createRow(rowNum++);
+            Row row = sheet.createRow(rowNum++); // Create a new row in the Excel sheet
 
+            // Loop through each column (List<WebElement>)
             for (int j = 0; j < elements.size(); j++) {
-                WebElement element = elements.get(j).get(i); // Get the element for each column in the current row
+                List<WebElement> column = elements.get(j);
 
-                String cellValue = (j == 3) ? element.getAttribute("href") : element.getText(); // Handle link for column 3
-                row.createCell(0).setCellValue(rowNum-1);
-                row.createCell(j+1).setCellValue(cellValue);
+                // Check if the current row exists in the column
+                if (i < column.size()) {
+                    WebElement element = column.get(i);
+                    String cellValue = (j == 3) ? element.getAttribute("href") : element.getText();
+                    row.createCell(j + 1).setCellValue(cellValue); // Write data to the cell
+                } else {
+                    row.createCell(j + 1).setCellValue(""); // Add empty value for missing data
+                }
             }
+
+            // Add the row number to the first cell
+            row.createCell(0).setCellValue(rowNum - 1);
         }
 
         // Auto-size columns for a better appearance
-        for (int i = 0; i < elements.size(); i++) {
+        for (int i = 0; i <= elements.size(); i++) {
             sheet.autoSizeColumn(i);
         }
+
         return rowNum;
     }
+
 
 }
