@@ -19,7 +19,7 @@ public class ExcelUtils {
 
     public ExcelUtils(String fileName){
         try {
-            workbook = new XSSFWorkbook("src/test/resources/excelFiles/" + fileName);
+            workbook = new XSSFWorkbook("src/test/resources/excel-files/" + fileName);
             sheet = workbook.getSheetAt(0);
         } catch (IOException e) {
             throw new RuntimeException(e);

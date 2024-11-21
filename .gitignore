@@ -36,3 +36,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Excel Files ###
+src/test/resources/excel-files/*
